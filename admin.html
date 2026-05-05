@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin | Flyers Factory</title>
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        color: #f8fafc;
+        background:
+          radial-gradient(circle at 15% 10%, rgba(34, 211, 238, .18), transparent 28rem),
+          radial-gradient(circle at 85% 0%, rgba(255, 138, 31, .16), transparent 25rem),
+          #05070d;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      a { color: inherit; text-decoration: none; }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 18px;
+        background: rgba(5, 7, 13, .88);
+        border-bottom: 1px solid rgba(255,255,255,.12);
+        backdrop-filter: blur(12px);
+      }
+      .brand {
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+      .brand span { color: #ff8a1f; }
+      main {
+        width: min(1160px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 48px 0 80px;
+      }
+      h1 {
+        margin: 0;
+        font-size: clamp(38px, 10vw, 72px);
+        line-height: .95;
+        text-transform: uppercase;
+      }
+      h2 { margin: 0 0 14px; text-transform: uppercase; }
+      p { color: #a8b3c4; line-height: 1.65; }
+      .card {
+        border: 1px solid rgba(255,255,255,.13);
+        border-radius: 8px;
+        padding: 22px;
+        background:
+          linear-gradient(135deg, rgba(255,255,255,.08), transparent 28%),
+          linear-gradient(145deg, rgba(15,23,42,.95), rgba(2,6,23,.88));
+        box-shadow: 0 24px 80px rgba(0,0,0,.38);
+      }
+      .grid {
+        display: grid;
+        gap: 16px;
+      }
+      .login {
+        max-width: 460px;
+        margin-top: 28px;
+      }
+      input, select, textarea {
+        width: 100%;
+        min-height: 52px;
+        margin: 0 0 12px;
+        padding: 14px;
+        color: #fff;
+        background: rgba(2, 6, 23, .78);
+        border: 1px solid rgba(148, 163, 184, .28);
+        border-radius: 8px;
+        font: inherit;
+      }
+      textarea { min-height: 90px; resize: vertical; }
+      button, .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 48px;
+        padding: 12px 16px;
+        border: 0;
+        border-radius: 8px;
+        color: #031018;
+        background: #22d3ee;
+        font: inherit;
+        font-weight: 900;
+        cursor: pointer;
+        box-shadow: 0 0 28px rgba(34,211,238,.28);
+      }
+      .orange { background: #ff8a1f; box-shadow: 0 0 28px rgba(255,138,31,.24); }
+      .ghost {
+        color: #fff;
+        background: rgba(255,255,255,.08);
+        border: 1px solid rgba(255,255,255,.16);
+        box-shadow: none;
+      }
+      .danger {
+        color: #fecaca;
+        background: rgba(239,68,68,.16);
+        box-shadow: none;
+      }
+      .hidden { display: none !important; }
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 24px 0;
+      }
+      .category-card h3 {
+        margin-top: 0;
+        color: #fff;
+      }
+      .category-card small {
+        color: #22d3ee;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      .items {
+        margin-top: 34px;
+      }
+      .item {
+        display: grid;
+        gap: 12px;
+        align-items: center;
+      }
+      .item img, .item video {
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+        border-radius: 8px;
+        background: #000;
+      }
+      .status {
+        margin-top: 14px;
+        color: #22d3ee;
+        font-weight: 800;
+      }
+      .notice {
+        border-left: 4px solid #ff8a1f;
+      }
+      @media (min-width: 760px) {
+        .grid-2 { grid-template-columns: repeat(2, 1fr); }
+        .grid-3 { grid-template-columns: repeat(3, 1fr); }
+        .item { grid-template-columns: 150px 1fr auto; }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <a class="brand" href="index.html">Flyers <span>Factory</span></a>
+      <a class="btn ghost" href="index.html">Ver web</a>
+    </header>
+
+    <main>
+      <section>
+        <h1>Panel privado</h1>
+        <p>Desde aquí solo el dueño puede subir imágenes y videos al portafolio.</p>
+      </section>
+
+      <section id="setupNotice" class="card notice">
+        <h2>Falta conectar Supabase</h2>
+        <p>
+          Para que el login y las subidas funcionen, hay que poner tus claves de Supabase dentro de este archivo
+          <strong>admin.html</strong> y también en <strong>index.html</strong>. Sin eso, GitHub solo muestra la página,
+          pero no puede guardar imágenes.
+        </p>
+      </section>
+
+      <section id="loginBox" class="card login">
+        <h2>Entrar como admin</h2>
+        <input id="email" type="email" placeholder="Tu email admin" />
+        <input id="password" type="password" placeholder="Tu contraseña" />
+        <button onclick="login()">Entrar</button>
+        <p id="loginStatus" class="status"></p>
+      </section>
+
+      <section id="adminBox" class="hidden">
+        <div class="toolbar">
+          <button class="ghost" onclick="loadItems()">Actualizar portafolio</button>
+          <button class="danger" onclick="logout()">Salir</button>
+        </div>
+
+        <div class="grid grid-3" id="categoryButtons"></div>
+
+        <div class="card items">
+          <h2>Trabajos subidos</h2>
+          <div class="grid" id="itemsList"></div>
+        </div>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      const SUPABASE_URL = "";
+      const SUPABASE_ANON_KEY = "";
+      const BUCKET = "portfolio";
+      const categories = ["Flyers", "Logos", "Videos", "Redes sociales", "Branding", "Invitaciones", "Menús"];
+      let client = null;
+
+      if (SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase) {
+        client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        document.getElementById("setupNotice").classList.add("hidden");
+        checkSession();
+      }
+
+      function buildCategoryButtons() {
+        const box = document.getElementById("categoryButtons");
+        box.innerHTML = categories.map((category) => `
+          <article class="card category-card">
+            <small>${category}</small>
+            <h3>Subir a ${category}</h3>
+            <input id="title-${category}" placeholder="Título" />
+            <textarea id="description-${category}" placeholder="Descripción opcional"></textarea>
+            <input id="file-${category}" type="file" accept="image/*,video/*" />
+            <button class="orange" onclick="uploadItem('${category}')">Subir imagen/video</button>
+          </article>
+        `).join("");
+      }
+
+      async function checkSession() {
+        const { data } = await client.auth.getSession();
+        if (data.session) showAdmin();
+      }
+
+      async function login() {
+        if (!client) {
+          document.getElementById("loginStatus").textContent = "Primero hay que conectar Supabase.";
+          return;
+        }
+
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const { error } = await client.auth.signInWithPassword({ email, password });
+
+        if (error) {
+          document.getElementById("loginStatus").textContent = "Email o contraseña incorrectos.";
+          return;
+        }
+
+        showAdmin();
+      }
+
+      function showAdmin() {
+        document.getElementById("loginBox").classList.add("hidden");
+        document.getElementById("adminBox").classList.remove("hidden");
+        buildCategoryButtons();
+        loadItems();
+      }
+
+      async function logout() {
+        await client.auth.signOut();
+        location.reload();
+      }
+
+      async function uploadItem(category) {
+        const titleInput = document.getElementById(`title-${category}`);
+        const descriptionInput = document.getElementById(`description-${category}`);
+        const fileInput = document.getElementById(`file-${category}`);
+        const file = fileInput.files[0];
+
+        if (!titleInput.value || !file) {
+          alert("Pon un título y selecciona una imagen o video.");
+          return;
+        }
+
+        const cleanName = file.name.replace(/[^\w.-]+/g, "-");
+        const path = `${Date.now()}-${cleanName}`;
+        const fileType = file.type.startsWith("video") ? "video" : "image";
+
+        const upload = await client.storage.from(BUCKET).upload(path, file);
+        if (upload.error) {
+          alert("No se pudo subir el archivo.");
+          return;
+        }
+
+        const { data } = client.storage.from(BUCKET).getPublicUrl(path);
+        const insert = await client.from("portfolio_items").insert({
+          title: titleInput.value,
+          description: descriptionInput.value,
+          category,
+          file_type: fileType,
+          file_url: data.publicUrl,
+          storage_path: path,
+          published: true
+        });
+
+        if (insert.error) {
+          alert("El archivo subió, pero no se pudo guardar en el portafolio.");
+          return;
+        }
+
+        titleInput.value = "";
+        descriptionInput.value = "";
+        fileInput.value = "";
+        await loadItems();
+        alert("Trabajo subido al portafolio.");
+      }
+
+      async function loadItems() {
+        const { data, error } = await client
+          .from("portfolio_items")
+          .select("*")
+          .order("created_at", { ascending: false });
+
+        const list = document.getElementById("itemsList");
+        if (error || !data || data.length === 0) {
+          list.innerHTML = "<p>No hay trabajos subidos todavía.</p>";
+          return;
+        }
+
+        list.innerHTML = data.map((item) => {
+          const media = item.file_type === "video"
+            ? `<video src="${item.file_url}" controls></video>`
+            : `<img src="${item.file_url}" alt="${item.title}" />`;
+
+          return `
+            <article class="item">
+              ${media}
+              <div>
+                <h3>${item.title}</h3>
+                <p>${item.category} · ${item.published ? "Visible" : "Oculto"}</p>
+              </div>
+              <button class="danger" onclick="deleteItem('${item.id}', '${item.storage_path || ""}')">Borrar</button>
+            </article>
+          `;
+        }).join("");
+      }
+
+      async function deleteItem(id, path) {
+        if (!confirm("¿Borrar este trabajo del portafolio?")) return;
+        await client.from("portfolio_items").delete().eq("id", id);
+        if (path) await client.storage.from(BUCKET).remove([path]);
+        await loadItems();
+      }
+    </script>
+  </body>
+</html>

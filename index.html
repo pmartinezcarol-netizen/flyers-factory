@@ -370,6 +370,7 @@
         <a href="#portafolio">Portafolio</a>
         <a href="#paquetes">Paquetes</a>
         <a href="#cotizacion">Cotización</a>
+        <a href="admin.html">Admin</a>
       </div>
     </nav>
 
@@ -414,7 +415,7 @@
           <h2>Galería</h2>
           <p>Zona preparada para mostrar trabajos reales de flyers, logos, videos, redes, branding, invitaciones y menús.</p>
         </div>
-        <div class="grid gallery">
+        <div class="grid gallery" id="portfolioGrid">
           <article class="card work"><img src="public/assets/flyers-factory-hero.png" alt="Muestra Flyers Factory" /><div><h3>Flyer promocional</h3><p class="muted">Ejemplo visual editable.</p></div></article>
           <article class="card work"><img src="public/assets/flyers-factory-hero.png" alt="Muestra branding" /><div><h3>Branding neón</h3><p class="muted">Espacio para trabajo real.</p></div></article>
           <article class="card work"><img src="public/assets/flyers-factory-hero.png" alt="Muestra redes sociales" /><div><h3>Post redes sociales</h3><p class="muted">Espacio para trabajo real.</p></div></article>
@@ -503,5 +504,43 @@
     </footer>
 
     <a class="floating" href="https://wa.me/34664136316?text=Hola%20Flyers%20Factory%2C%20quiero%20pedir%20un%20dise%C3%B1o." target="_blank">☏</a>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      const SUPABASE_URL = "";
+      const SUPABASE_ANON_KEY = "";
+
+      async function loadPortfolioFromSupabase() {
+        if (!SUPABASE_URL || !SUPABASE_ANON_KEY || !window.supabase) return;
+
+        const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const { data, error } = await client
+          .from("portfolio_items")
+          .select("*")
+          .eq("published", true)
+          .order("created_at", { ascending: false });
+
+        if (error || !data || data.length === 0) return;
+
+        const grid = document.getElementById("portfolioGrid");
+        grid.innerHTML = data.map((item) => {
+          const media = item.file_type === "video"
+            ? `<video src="${item.file_url}" controls style="width:100%;aspect-ratio:4/3;object-fit:cover;background:#000;"></video>`
+            : `<img src="${item.file_url}" alt="${item.title}" />`;
+
+          return `
+            <article class="card work">
+              ${media}
+              <div>
+                <h3>${item.title}</h3>
+                <p class="muted">${item.category}</p>
+                <p class="muted">${item.description || ""}</p>
+              </div>
+            </article>
+          `;
+        }).join("");
+      }
+
+      loadPortfolioFromSupabase();
+    </script>
   </body>
 </html>
