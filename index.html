@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flyers Factory | Diseño y Publicidad Visual</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        color: #f8fafc;
+        background: #05070d;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .nav {
+        position: fixed;
+        inset: 0 0 auto;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 14px 18px;
+        background: rgba(5, 7, 13, 0.86);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(12px);
+      }
+
+      .brand {
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+
+      .brand span {
+        color: #ff8a1f;
+      }
+
+      .nav-links {
+        display: none;
+        gap: 18px;
+        font-size: 14px;
+        font-weight: 700;
+        color: #cbd5e1;
+      }
+
+      .hero {
+        position: relative;
+        min-height: 92vh;
+        display: grid;
+        align-items: center;
+        padding: 110px 18px 64px;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(90deg, rgba(5, 7, 13, 0.92), rgba(5, 7, 13, 0.6), rgba(5, 7, 13, 0.92)),
+          url("public/assets/flyers-factory-hero.png") center / cover;
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+        background-size: 44px 44px;
+        opacity: 0.45;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 1;
+        max-width: 900px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      .tag {
+        display: inline-block;
+        margin-bottom: 18px;
+        padding: 10px 14px;
+        border: 1px solid rgba(34, 211, 238, 0.42);
+        border-radius: 999px;
+        color: #22d3ee;
+        background: rgba(34, 211, 238, 0.1);
+        font-size: 12px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(48px, 15vw, 112px);
+        line-height: 0.92;
+        text-transform: uppercase;
+        letter-spacing: 0;
+      }
+
+      .hero p {
+        max-width: 680px;
+        color: #dbe4ef;
+        font-size: 19px;
+        line-height: 1.65;
+      }
+
+      .buttons {
+        display: grid;
+        gap: 12px;
+        margin-top: 28px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 54px;
+        padding: 14px 18px;
+        border-radius: 8px;
+        font-weight: 900;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+      }
+
+      .primary {
+        color: #031018;
+        background: #22d3ee;
+        box-shadow: 0 0 32px rgba(34, 211, 238, 0.35);
+      }
+
+      .orange {
+        color: #05070d;
+        background: #ff8a1f;
+        box-shadow: 0 0 32px rgba(255, 138, 31, 0.28);
+      }
+
+      .ghost {
+        color: #f8fafc;
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      section {
+        padding: 72px 18px;
+      }
+
+      .wrap {
+        max-width: 1180px;
+        margin: 0 auto;
+      }
+
+      .section-title {
+        max-width: 720px;
+        margin: 0 auto 36px;
+        text-align: center;
+      }
+
+      .section-title small {
+        color: #ff8a1f;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+
+      h2 {
+        margin: 12px 0;
+        font-size: clamp(32px, 8vw, 56px);
+        line-height: 1;
+        text-transform: uppercase;
+      }
+
+      .section-title p,
+      .muted {
+        color: #94a3b8;
+        line-height: 1.7;
+      }
+
+      .dark {
+        background: #080f19;
+      }
+
+      .grid {
+        display: grid;
+        gap: 16px;
+      }
+
+      .card {
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 8px;
+        padding: 22px;
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 28%),
+          linear-gradient(145deg, rgba(15, 23, 42, 0.96), rgba(2, 6, 23, 0.88));
+        box-shadow: 0 20px 70px rgba(0, 0, 0, 0.34);
+      }
+
+      .card h3 {
+        margin: 0 0 10px;
+        color: #fff;
+        font-size: 22px;
+      }
+
+      .service {
+        min-height: 155px;
+      }
+
+      .service strong {
+        display: inline-grid;
+        place-items: center;
+        width: 42px;
+        height: 42px;
+        margin-bottom: 18px;
+        border-radius: 8px;
+        color: #031018;
+        background: #22d3ee;
+      }
+
+      .gallery {
+        grid-template-columns: 1fr;
+      }
+
+      .work {
+        overflow: hidden;
+        padding: 0;
+      }
+
+      .work img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+      }
+
+      .work div {
+        padding: 18px;
+      }
+
+      .package {
+        display: flex;
+        min-height: 280px;
+        flex-direction: column;
+      }
+
+      .package .btn {
+        margin-top: auto;
+      }
+
+      form {
+        display: grid;
+        gap: 14px;
+        max-width: 820px;
+        margin: 0 auto;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        min-height: 52px;
+        padding: 14px;
+        color: #fff;
+        background: rgba(2, 6, 23, 0.78);
+        border: 1px solid rgba(148, 163, 184, 0.28);
+        border-radius: 8px;
+        font: inherit;
+      }
+
+      textarea {
+        min-height: 140px;
+        resize: vertical;
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        outline: 3px solid rgba(34, 211, 238, 0.18);
+        border-color: #22d3ee;
+      }
+
+      .contact-box {
+        text-align: center;
+      }
+
+      footer {
+        padding: 32px 18px;
+        text-align: center;
+        color: #94a3b8;
+        background: #05070d;
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+      }
+
+      .floating {
+        position: fixed;
+        right: 18px;
+        bottom: 18px;
+        z-index: 12;
+        display: grid;
+        place-items: center;
+        width: 58px;
+        height: 58px;
+        border-radius: 50%;
+        color: #fff;
+        background: #22c55e;
+        box-shadow: 0 0 30px rgba(34, 197, 94, 0.5);
+        font-size: 26px;
+        font-weight: 900;
+      }
+
+      @media (min-width: 700px) {
+        .nav-links {
+          display: flex;
+        }
+
+        .buttons {
+          display: flex;
+          flex-wrap: wrap;
+        }
+
+        .btn {
+          width: auto;
+        }
+
+        .grid-2 {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .grid-3,
+        .gallery {
+          grid-template-columns: repeat(3, 1fr);
+        }
+
+        form {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        textarea,
+        .full {
+          grid-column: 1 / -1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="nav">
+      <a class="brand" href="#inicio">Flyers <span>Factory</span></a>
+      <div class="nav-links">
+        <a href="#servicios">Servicios</a>
+        <a href="#portafolio">Portafolio</a>
+        <a href="#paquetes">Paquetes</a>
+        <a href="#cotizacion">Cotización</a>
+      </div>
+    </nav>
+
+    <header id="inicio" class="hero">
+      <div class="hero-content">
+        <span class="tag">Diseño urbano, digital y premium</span>
+        <h1>Flyers Factory</h1>
+        <p>
+          Flyers, logos, banners, posts para redes sociales, publicidad digital, videos promocionales, branding,
+          tarjetas, menús e invitaciones con estética oscura, futurista y neón.
+        </p>
+        <div class="buttons">
+          <a class="btn primary" href="https://wa.me/34664136316?text=Hola%20Flyers%20Factory%2C%20quiero%20pedir%20un%20dise%C3%B1o." target="_blank">Pedir diseño por WhatsApp</a>
+          <a class="btn ghost" href="#portafolio">Ver portafolio</a>
+          <a class="btn orange" href="#cotizacion">Solicitar cotización</a>
+        </div>
+      </div>
+    </header>
+
+    <section id="servicios">
+      <div class="wrap">
+        <div class="section-title">
+          <small>Servicios</small>
+          <h2>Diseño que llama la atención</h2>
+          <p>Material visual para negocios, eventos, marcas personales, campañas digitales y redes sociales.</p>
+        </div>
+        <div class="grid grid-3">
+          <article class="card service"><strong>01</strong><h3>Flyers</h3><p class="muted">Promociones, eventos, fiestas, anuncios y campañas visuales.</p></article>
+          <article class="card service"><strong>02</strong><h3>Logos</h3><p class="muted">Identidad visual para negocios, marcas personales y proyectos.</p></article>
+          <article class="card service"><strong>03</strong><h3>Banners</h3><p class="muted">Piezas para web, redes, anuncios y perfiles profesionales.</p></article>
+          <article class="card service"><strong>04</strong><h3>Posts para redes</h3><p class="muted">Contenido visual listo para Instagram, Facebook, TikTok y más.</p></article>
+          <article class="card service"><strong>05</strong><h3>Videos promocionales</h3><p class="muted">Promos dinámicas para vender, anunciar o presentar tu marca.</p></article>
+          <article class="card service"><strong>06</strong><h3>Branding y más</h3><p class="muted">Tarjetas, menús, invitaciones, publicidad digital y otros diseños.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="portafolio" class="dark">
+      <div class="wrap">
+        <div class="section-title">
+          <small>Portafolio</small>
+          <h2>Galería</h2>
+          <p>Zona preparada para mostrar trabajos reales de flyers, logos, videos, redes, branding, invitaciones y menús.</p>
+        </div>
+        <div class="grid gallery">
+          <article class="card work"><img src="public/assets/flyers-factory-hero.png" alt="Muestra Flyers Factory" /><div><h3>Flyer promocional</h3><p class="muted">Ejemplo visual editable.</p></div></article>
+          <article class="card work"><img src="public/assets/flyers-factory-hero.png" alt="Muestra branding" /><div><h3>Branding neón</h3><p class="muted">Espacio para trabajo real.</p></div></article>
+          <article class="card work"><img src="public/assets/flyers-factory-hero.png" alt="Muestra redes sociales" /><div><h3>Post redes sociales</h3><p class="muted">Espacio para trabajo real.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="paquetes">
+      <div class="wrap">
+        <div class="section-title">
+          <small>Paquetes</small>
+          <h2>Básico, Pro y Premium</h2>
+          <p>No hay precios fijos todavía. Cada paquete se cotiza según lo que necesite el cliente.</p>
+        </div>
+        <div class="grid grid-3">
+          <article class="card package"><h3>Básico</h3><p class="muted">Estructura preparada para añadir descripción personalizada.</p><a class="btn primary" href="#cotizacion">Solicitar cotización</a></article>
+          <article class="card package"><h3>Pro</h3><p class="muted">Estructura preparada para añadir descripción personalizada.</p><a class="btn orange" href="#cotizacion">Solicitar cotización</a></article>
+          <article class="card package"><h3>Premium</h3><p class="muted">Estructura preparada para añadir descripción personalizada.</p><a class="btn primary" href="#cotizacion">Solicitar cotización</a></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="dark">
+      <div class="wrap grid grid-2">
+        <article class="card">
+          <small style="color:#22d3ee;font-weight:900;text-transform:uppercase;letter-spacing:2px;">Sobre Flyers Factory</small>
+          <h2>Diseño visual de alto impacto</h2>
+        </article>
+        <article class="card">
+          <p class="muted">
+            Flyers Factory se enfoca en crear piezas visuales modernas, urbanas y profesionales para negocios, eventos,
+            marcas personales, redes sociales y publicidad. La idea es que tu diseño se vea fuerte, claro y listo para vender.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="cotizacion">
+      <div class="wrap">
+        <div class="section-title">
+          <small>Cotización</small>
+          <h2>Subir mi proyecto</h2>
+          <p>Completa los datos. En esta versión simple, el botón abre tu correo para enviar la solicitud.</p>
+        </div>
+        <form action="mailto:P.MARTINEZCAROL@GMAIL.COM" method="post" enctype="text/plain">
+          <input name="Nombre" placeholder="Nombre" required />
+          <input name="WhatsApp" placeholder="WhatsApp" required />
+          <input name="Email" type="email" placeholder="Email" required />
+          <select name="Tipo de diseño" required>
+            <option value="">Tipo de diseño</option>
+            <option>Flyer</option>
+            <option>Logo</option>
+            <option>Banner</option>
+            <option>Post redes sociales</option>
+            <option>Video promocional</option>
+            <option>Branding</option>
+            <option>Tarjeta de presentación</option>
+            <option>Menú</option>
+            <option>Invitación</option>
+            <option>Otro</option>
+          </select>
+          <input name="Presupuesto" placeholder="Presupuesto" />
+          <input name="Fecha de entrega" type="date" />
+          <textarea name="Mensaje" placeholder="Mensaje" required></textarea>
+          <input class="full" name="Archivo adjunto" type="file" />
+          <button class="btn orange full" type="submit">Enviar solicitud por correo</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="dark">
+      <div class="wrap contact-box">
+        <h2>Contacto</h2>
+        <p class="muted">WhatsApp: +34 664 136 316</p>
+        <p class="muted">Correo: P.MARTINEZCAROL@GMAIL.COM</p>
+        <div class="buttons" style="justify-content:center;">
+          <a class="btn primary" href="https://wa.me/34664136316?text=Hola%20Flyers%20Factory%2C%20quiero%20pedir%20un%20dise%C3%B1o." target="_blank">Pedir diseño por WhatsApp</a>
+          <a class="btn ghost" href="mailto:P.MARTINEZCAROL@GMAIL.COM">Enviar correo</a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <strong>Flyers Factory</strong>
+      <p>Diseño gráfico, publicidad digital y branding visual.</p>
+    </footer>
+
+    <a class="floating" href="https://wa.me/34664136316?text=Hola%20Flyers%20Factory%2C%20quiero%20pedir%20un%20dise%C3%B1o." target="_blank">☏</a>
+  </body>
+</html>
