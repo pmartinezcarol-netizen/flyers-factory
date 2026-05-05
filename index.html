@@ -291,6 +291,7 @@
       .work {
         overflow: hidden;
         padding: 0;
+        cursor: pointer;
       }
 
       .work img {
@@ -303,6 +304,64 @@
 
       .work div {
         padding: 18px;
+      }
+
+      .lightbox {
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+        background: rgba(0, 0, 0, 0.9);
+      }
+
+      .lightbox.open {
+        display: flex;
+      }
+
+      .lightbox-inner {
+        width: min(1100px, 100%);
+        max-height: 92vh;
+        overflow: auto;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 8px;
+        background: #05070d;
+        box-shadow: 0 30px 90px rgba(0, 0, 0, 0.72);
+      }
+
+      .lightbox-media img,
+      .lightbox-media video {
+        display: block;
+        max-width: 100%;
+        width: auto;
+        max-height: 78vh;
+        margin: 0 auto;
+        object-fit: contain;
+        background: #000;
+      }
+
+      .lightbox-caption {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 16px;
+      }
+
+      .lightbox-caption h3 {
+        margin: 0;
+        font-size: 22px;
+      }
+
+      .lightbox-close {
+        min-height: 44px;
+        padding: 10px 14px;
+        border-radius: 8px;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: none;
       }
 
       .package {
@@ -467,9 +526,9 @@
           <p>Zona preparada para mostrar trabajos reales de flyers, logos, videos, redes, branding, invitaciones y menús.</p>
         </div>
         <div class="grid gallery" id="portfolioGrid">
-          <article class="card work"><img src="public/assets/flyers-factory-hero.png" alt="Muestra Flyers Factory" /><div><h3>Flyer promocional</h3><p class="muted">Ejemplo visual editable.</p></div></article>
-          <article class="card work"><img src="public/assets/flyers-factory-hero.png" alt="Muestra branding" /><div><h3>Branding neón</h3><p class="muted">Espacio para trabajo real.</p></div></article>
-          <article class="card work"><img src="public/assets/flyers-factory-hero.png" alt="Muestra redes sociales" /><div><h3>Post redes sociales</h3><p class="muted">Espacio para trabajo real.</p></div></article>
+          <article class="card work" onclick="openLightbox('image', 'public/assets/flyers-factory-hero.png', 'Flyer promocional', 'Ejemplo visual editable.')"><img src="public/assets/flyers-factory-hero.png" alt="Muestra Flyers Factory" /><div><h3>Flyer promocional</h3><p class="muted">Ejemplo visual editable.</p></div></article>
+          <article class="card work" onclick="openLightbox('image', 'public/assets/flyers-factory-hero.png', 'Branding neón', 'Espacio para trabajo real.')"><img src="public/assets/flyers-factory-hero.png" alt="Muestra branding" /><div><h3>Branding neón</h3><p class="muted">Espacio para trabajo real.</p></div></article>
+          <article class="card work" onclick="openLightbox('image', 'public/assets/flyers-factory-hero.png', 'Post redes sociales', 'Espacio para trabajo real.')"><img src="public/assets/flyers-factory-hero.png" alt="Muestra redes sociales" /><div><h3>Post redes sociales</h3><p class="muted">Espacio para trabajo real.</p></div></article>
         </div>
       </div>
     </section>
@@ -555,6 +614,18 @@
     </footer>
 
     <a class="floating" href="https://wa.me/34664136316?text=Hola%20Flyers%20Factory%2C%20quiero%20pedir%20un%20dise%C3%B1o." target="_blank">☏</a>
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+      <div class="lightbox-inner" onclick="event.stopPropagation()">
+        <div class="lightbox-media" id="lightboxMedia"></div>
+        <div class="lightbox-caption">
+          <div>
+            <h3 id="lightboxTitle"></h3>
+            <p class="muted" id="lightboxText"></p>
+          </div>
+          <button class="lightbox-close" onclick="closeLightbox()">Cerrar</button>
+        </div>
+      </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
       const SUPABASE_URL = "https://bsxarfckjehymirghxmh.supabase.co";
@@ -581,7 +652,7 @@
             : `<img src="${item.file_url}" alt="${item.title}" />`;
 
           return `
-            <article class="card work">
+            <article class="card work" onclick="openLightbox('${item.file_type}', '${item.file_url}', '${escapeText(item.title)}', '${escapeText(item.category)}')">
               ${media}
               <div>
                 <h3>${item.title}</h3>
@@ -591,6 +662,28 @@
             </article>
           `;
         }).join("");
+      }
+
+      function openLightbox(type, url, title, text) {
+        const box = document.getElementById("lightbox");
+        const media = document.getElementById("lightboxMedia");
+        media.innerHTML = type === "video"
+          ? `<video src="${url}" controls autoplay></video>`
+          : `<img src="${url}" alt="${title}" />`;
+        document.getElementById("lightboxTitle").textContent = title;
+        document.getElementById("lightboxText").textContent = text || "";
+        box.classList.add("open");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeLightbox() {
+        document.getElementById("lightbox").classList.remove("open");
+        document.getElementById("lightboxMedia").innerHTML = "";
+        document.body.style.overflow = "";
+      }
+
+      function escapeText(value) {
+        return String(value || "").replace(/'/g, "\\'").replace(/"/g, "&quot;");
       }
 
       function loadServicePreviews(items) {
