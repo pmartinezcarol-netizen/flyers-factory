@@ -249,8 +249,9 @@
       .work img {
         display: block;
         width: 100%;
-        aspect-ratio: 4 / 3;
-        object-fit: cover;
+        height: auto;
+        object-fit: contain;
+        background: #05070d;
       }
 
       .work div {
@@ -506,8 +507,8 @@
     <a class="floating" href="https://wa.me/34664136316?text=Hola%20Flyers%20Factory%2C%20quiero%20pedir%20un%20dise%C3%B1o." target="_blank">☏</a>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-      const SUPABASE_URL = "";
-      const SUPABASE_ANON_KEY = "";
+      const SUPABASE_URL = "https://bsxarfckjehymirghxmh.supabase.co";
+      const SUPABASE_ANON_KEY = "sb_publishable_g_YBttxuM4tXCWiJcsa6kQ_v7EEtMAu";
 
       async function loadPortfolioFromSupabase() {
         if (!SUPABASE_URL || !SUPABASE_ANON_KEY || !window.supabase) return;
@@ -524,7 +525,7 @@
         const grid = document.getElementById("portfolioGrid");
         grid.innerHTML = data.map((item) => {
           const media = item.file_type === "video"
-            ? `<video src="${item.file_url}" controls style="width:100%;aspect-ratio:4/3;object-fit:cover;background:#000;"></video>`
+            ? `<video src="${item.file_url}" controls style="display:block;width:100%;height:auto;object-fit:contain;background:#000;"></video>`
             : `<img src="${item.file_url}" alt="${item.title}" />`;
 
           return `
