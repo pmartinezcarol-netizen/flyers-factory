@@ -70,15 +70,15 @@
         content: "";
         position: absolute;
         inset: 0;
-        background:
-          linear-gradient(90deg, rgba(5, 7, 13, 0.92), rgba(5, 7, 13, 0.6), rgba(5, 7, 13, 0.92)),
-          url("public/assets/flyers-factory-hero.png") center / cover;
+        z-index: 1;
+        background: linear-gradient(90deg, rgba(5, 7, 13, 0.92), rgba(5, 7, 13, 0.58), rgba(5, 7, 13, 0.9));
       }
 
       .hero::after {
         content: "";
         position: absolute;
         inset: 0;
+        z-index: 2;
         background-image:
           linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
           linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
@@ -86,9 +86,18 @@
         opacity: 0.45;
       }
 
+      .hero-video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        background: url("public/assets/flyers-factory-hero.png") center / cover;
+      }
+
       .hero-content {
         position: relative;
-        z-index: 1;
+        z-index: 3;
         max-width: 900px;
         margin: 0 auto;
         width: 100%;
@@ -110,10 +119,16 @@
 
       h1 {
         margin: 0;
-        font-size: clamp(48px, 15vw, 112px);
-        line-height: 0.92;
+        font-size: clamp(42px, 9vw, 118px);
+        line-height: 0.95;
         text-transform: uppercase;
         letter-spacing: 0;
+        white-space: nowrap;
+        background: linear-gradient(90deg, #ffffff 0%, #22d3ee 42%, #ff8a1f 78%, #ffffff 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-shadow: 0 0 34px rgba(34, 211, 238, 0.18), 0 0 44px rgba(255, 138, 31, 0.14);
       }
 
       .hero p {
@@ -403,6 +418,9 @@
     </nav>
 
     <header id="inicio" class="hero">
+      <video class="hero-video" autoplay muted loop playsinline poster="public/assets/flyers-factory-hero.png">
+        <source src="public/assets/hero-background.mp4" type="video/mp4" />
+      </video>
       <div class="hero-content">
         <span class="tag">Diseño urbano, digital y premium</span>
         <h1>Flyers Factory</h1>
