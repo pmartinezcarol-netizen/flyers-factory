@@ -207,6 +207,7 @@
       }
 
       .card {
+        position: relative;
         border: 1px solid rgba(255, 255, 255, 0.12);
         border-radius: 8px;
         padding: 22px;
@@ -223,7 +224,33 @@
       }
 
       .service {
+        overflow: hidden;
         min-height: 155px;
+      }
+
+      .service-media {
+        display: none;
+        margin: -22px -22px 18px;
+        overflow: hidden;
+        border-radius: 8px 8px 0 0;
+        background: #05070d;
+      }
+
+      .service-media img,
+      .service-media video {
+        display: block;
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+        background: #05070d;
+      }
+
+      .service.has-media strong {
+        position: absolute;
+        top: 14px;
+        left: 14px;
+        z-index: 1;
+        box-shadow: 0 0 24px rgba(34, 211, 238, 0.35);
       }
 
       .service strong {
@@ -399,12 +426,12 @@
           <p>Material visual para negocios, eventos, marcas personales, campañas digitales y redes sociales.</p>
         </div>
         <div class="grid grid-3">
-          <article class="card service"><strong>01</strong><h3>Flyers</h3><p class="muted">Promociones, eventos, fiestas, anuncios y campañas visuales.</p></article>
-          <article class="card service"><strong>02</strong><h3>Logos</h3><p class="muted">Identidad visual para negocios, marcas personales y proyectos.</p></article>
-          <article class="card service"><strong>03</strong><h3>Banners</h3><p class="muted">Piezas para web, redes, anuncios y perfiles profesionales.</p></article>
-          <article class="card service"><strong>04</strong><h3>Posts para redes</h3><p class="muted">Contenido visual listo para Instagram, Facebook, TikTok y más.</p></article>
-          <article class="card service"><strong>05</strong><h3>Videos promocionales</h3><p class="muted">Promos dinámicas para vender, anunciar o presentar tu marca.</p></article>
-          <article class="card service"><strong>06</strong><h3>Branding y más</h3><p class="muted">Tarjetas, menús, invitaciones, publicidad digital y otros diseños.</p></article>
+          <article class="card service" data-service="Flyers"><div class="service-media"></div><strong>01</strong><h3>Flyers</h3><p class="muted">Promociones, eventos, fiestas, anuncios y campañas visuales.</p></article>
+          <article class="card service" data-service="Logos"><div class="service-media"></div><strong>02</strong><h3>Logos</h3><p class="muted">Identidad visual para negocios, marcas personales y proyectos.</p></article>
+          <article class="card service" data-service="Flyers"><div class="service-media"></div><strong>03</strong><h3>Banners</h3><p class="muted">Piezas para web, redes, anuncios y perfiles profesionales.</p></article>
+          <article class="card service" data-service="Redes sociales"><div class="service-media"></div><strong>04</strong><h3>Posts para redes</h3><p class="muted">Contenido visual listo para Instagram, Facebook, TikTok y más.</p></article>
+          <article class="card service" data-service="Videos"><div class="service-media"></div><strong>05</strong><h3>Videos promocionales</h3><p class="muted">Promos dinámicas para vender, anunciar o presentar tu marca.</p></article>
+          <article class="card service" data-service="Branding"><div class="service-media"></div><strong>06</strong><h3>Branding y más</h3><p class="muted">Tarjetas, menús, invitaciones, publicidad digital y otros diseños.</p></article>
         </div>
       </div>
     </section>
@@ -522,6 +549,8 @@
 
         if (error || !data || data.length === 0) return;
 
+        loadServicePreviews(data);
+
         const grid = document.getElementById("portfolioGrid");
         grid.innerHTML = data.map((item) => {
           const media = item.file_type === "video"
@@ -539,6 +568,21 @@
             </article>
           `;
         }).join("");
+      }
+
+      function loadServicePreviews(items) {
+        document.querySelectorAll("[data-service]").forEach((card) => {
+          const category = card.getAttribute("data-service");
+          const item = items.find((work) => work.category === category);
+          if (!item) return;
+
+          const media = card.querySelector(".service-media");
+          media.innerHTML = item.file_type === "video"
+            ? `<video src="${item.file_url}" muted playsinline controls></video>`
+            : `<img src="${item.file_url}" alt="${item.title}" />`;
+          media.style.display = "block";
+          card.classList.add("has-media");
+        });
       }
 
       loadPortfolioFromSupabase();
